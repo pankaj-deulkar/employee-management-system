@@ -2,17 +2,17 @@ package com.example.employeemanagement.dto;
 
 public class EmployeeResponse {
 
-	private int id;
+	private Long id;
 	private String name;
 	private double salary;
 	
 
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

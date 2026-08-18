@@ -36,42 +36,36 @@ public class EmployeeController {
   public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody EmployeeRequest
 		  request)
   {
-	    EmployeeResponse response= employeeService.createEmployee(request);
+	  EmployeeResponse response= employeeService.createEmployee(request);
 	  return ResponseEntity.status(HttpStatus.CREATED)
 			               .body(response);
   }
   
   @GetMapping
-  public List<Employee> getEmployees()
+  public List<EmployeeResponse> getEmployees()
   {
     return employeeService.getEmployees();
   }
   
   @GetMapping("/{id}")
-  public Optional<Employee> getEmployee(@PathVariable int id)
+  public EmployeeResponse getEmployee(@PathVariable Long id)
   {
 	  return employeeService.getEmployee(id);
   }
   
-  @GetMapping("/search")
-  public List<Employee> searchEmployees(@RequestParam String name)
+  @DeleteMapping("/{id}")
+  public void delete(@PathVariable Long id)
   {
-	  return employeeService.searchEmployees(name);
+	  employeeService.delete(id);
+	 
   }
   
   @PutMapping("/{id}")
-  public Employee updateEmployee(@RequestBody EmployeeRequest request, 
-		                        @PathVariable int id)
+  public EmployeeResponse update(@PathVariable Long id, @RequestBody EmployeeRequest request)
   {
-    return employeeService.updateEmployee(request, id);
+	 return employeeService.update(id, request); 
   }
   
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteEmployee(@PathVariable int id)
-  {
-	  employeeService.deleteEmployee(id);
-	  return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
   
 
 }

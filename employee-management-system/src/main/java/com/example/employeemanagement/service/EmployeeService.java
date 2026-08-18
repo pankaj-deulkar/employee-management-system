@@ -1,6 +1,6 @@
 package com.example.employeemanagement.service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,101 +10,87 @@ import org.springframework.stereotype.Service;
 import com.example.employeemanagement.dto.EmployeeRequest;
 import com.example.employeemanagement.dto.EmployeeResponse;
 import com.example.employeemanagement.entity.Employee;
+import com.example.employeemanagement.repository.EmployeeRepository;
 
 @Service
 public class EmployeeService {
 
-    List<Employee> employees=new ArrayList<>();
+    private final EmployeeRepository employeeRepository;
 	
     
-    public EmployeeService()
+    public EmployeeService(EmployeeRepository employeeRepository)
     {
-
-		Employee e1=new Employee();
-		e1.setId(1);
-		e1.setName("Pankaj");
-		e1.setSalary(5000);
-		
-		Employee e2=new Employee();
-		e2.setId(2);
-		e2.setName("Ankita");
-		e2.setSalary(6000);
-		
-		employees.add(e1);
-		employees.add(e2);
+		this.employeeRepository=employeeRepository;
     }
 	
 	public EmployeeResponse createEmployee(EmployeeRequest request)
 	{
-	   
-		Employee e=new Employee();
-		e.setId(request.getId());
-		e.setName(request.getName());
-		e.setSalary(request.getSalary());
-		
-		
-			employees.add(e);
-			EmployeeResponse response=new EmployeeResponse();
-			response.setId(e.getId());
-			response.setName(e.getName());
-			response.setSalary(e.getSalary());
-			return response;
+	     Employee e=new Employee();
+	     e.setName(request.getName());
+	     e.setSalary(request.getSalary());
+	     Employee e1=employeeRepository.save(e);
+	     
+	     EmployeeResponse response=new EmployeeResponse();
+	     response.setId(e1.getId());
+	     response.setName(e1.getName());
+	     response.setSalary(e1.getSalary());
+	     return response;
 			
 	}
 	
-	public List<Employee> getEmployees()
+	public List<EmployeeResponse> getEmployees()
 	{  
-		return employees;
+		 List<Employee> employees= employeeRepository.findAll();
+		 
+		 
+		 
+		 return employees.stream()
+				         .map(e-> {
+				                     EmployeeResponse response=new EmployeeResponse();
+				                     response.setId(e.getId());
+			                         response.setName(e.getName());
+			                         response.setSalary(e.getSalary());
+			                         return response;
+			                         })
+		                 .collect(Collectors.toList());
 	}
 	
 	
-	public Optional<Employee> getEmployee(int id)
+	public EmployeeResponse getEmployee(Long id)
 	{
-		return employees.stream()
-		         .filter(e->e.getId()==id)
-		         .findFirst();
+		Employee employee= employeeRepository.findById(id)
+				                 .orElseThrow(()->new RuntimeException("Employee Not Found"));
+		
+		EmployeeResponse response=new EmployeeResponse();
+		response.setId(employee.getId());
+		response.setName(employee.getName());
+		response.setSalary(employee.getSalary());
+		return response;
 	
 	}
 	
-	public List<Employee> searchEmployees(String name)
+	public void delete(Long id)
 	{
-		return employees.stream()
-		         .filter(e->e.getName().equals(name))
-		         .collect(Collectors.toList());
-		
-	 }
-	
-	public Employee updateEmployee(EmployeeRequest request, int id)
-	{
-		Optional<Employee> existingEmployee= employees.stream()
-		                                     .filter(e->e.getId()==id)
-		                                     .findFirst();
-		
-		if(existingEmployee.isPresent())
-		{
-			Employee employee=existingEmployee.get();
-			employee.setName(request.getName());
-			employee.setSalary(request.getSalary());
-			return employee;
-		}
-		else
-		{
-			throw new RuntimeException("Employee not Found With Id :"+id);
-		}
-		                                     
+		employeeRepository.deleteById(id);
 	}
 	
-	public void deleteEmployee(int id)
+	
+	public EmployeeResponse update(Long id, EmployeeRequest request)
 	{
-		boolean removed= employees.removeIf(emp->emp.getId()==id);
-		
-		if(!removed)
-		{
-			throw new RuntimeException("Employee not Found With Id :" + id);
-		}
-		
-	   
-		         
+	    Employee emp= employeeRepository.findById(id)
+	     .orElseThrow(()-> new RuntimeException("Employee Not FOund"));	
+	     
+	     emp.setName(request.getName());
+	     emp.setSalary(request.getSalary());
+	     employeeRepository.save(emp);
+	     
+	     EmployeeResponse response=new EmployeeResponse();
+	     response.setId(emp.getId());
+	     response.setName(emp.getName());
+	     response.setSalary(emp.getSalary());
+	     return response;
+	     
+	
 	}
 	
 }
