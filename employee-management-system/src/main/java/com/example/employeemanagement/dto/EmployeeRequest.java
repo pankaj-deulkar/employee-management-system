@@ -1,19 +1,15 @@
 package com.example.employeemanagement.dto;
 
+import com.example.employeemanagement.entity.Department;
+
 public class EmployeeRequest {
 
-	private Long id;
+	
 	private String name;
 	private double salary;
+	private Long departmentId;
+
 	
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -30,6 +26,15 @@ public class EmployeeRequest {
 	public void setSalary(double salary) {
 		this.salary = salary;
 	}
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+
 	
 	
 	
