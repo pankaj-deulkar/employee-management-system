@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="employees")
 public class Employee {
@@ -19,6 +21,7 @@ public class Employee {
 	private double salary;
 	@ManyToOne
 	@JoinColumn(name="department_id")
+	@JsonIgnoreProperties("employees")
 	private Department department;
 	
 	public Department getDepartment() {

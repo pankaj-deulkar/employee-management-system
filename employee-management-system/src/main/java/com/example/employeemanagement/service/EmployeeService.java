@@ -61,6 +61,9 @@ public class EmployeeService {
 				                     response.setId(e.getId());
 			                         response.setName(e.getName());
 			                         response.setSalary(e.getSalary());
+			                         response.setDepartmentId(e.getDepartment().getId());
+			                         response.setDepartmentName(e.getDepartment().getName());
+			                         response.setLocation(e.getDepartment().getLocation());
 			                         return response;
 			                         })
 		                 .collect(Collectors.toList());
@@ -116,4 +119,59 @@ public class EmployeeService {
 	
 	}
 	
+	
+	public List<Employee> getByName(String name)
+	{
+		return employeeRepository.findByName(name);
+	}
+	
+	public List<Employee> getEmployeesByHighSalary(double salary)
+	{
+		return employeeRepository.findBySalaryGreaterThan(salary);
+	}
+	
+	public List<Employee> getEmployeesWithLessSalary(double salary)
+	{
+		return employeeRepository.findBySalaryLessThan(salary);
+	}
+	
+	public List<Employee> getEmployeesInSalaryRange(double min,double max)
+	{
+		return employeeRepository.findBySalaryBetween(min, max);
+	}
+	
+	public List<Employee> getEmployeesWithNameContaining(String name)
+	{
+		return employeeRepository.findByNameContaining(name);
+	}
+	
+	public List<Employee> getEmployeesByNameStartingWith(String name)
+	{
+		return employeeRepository.findByNameStartingWith(name);
+	}
+	
+	public List<Employee> getEmployeesByDepartmentName(String name)
+	{
+		return employeeRepository.findByDepartment_Name(name);
+	}
+	
+	public List<Employee> getEmployeesByDeptIdSortBySalary(long id)
+	{
+		return employeeRepository.findByDepartment_IdOrderBySalaryDesc(id);
+	}
+	
+	public List<Employee> getEmployeesWithSalaryGreaterThan(double salary)
+	{
+		return employeeRepository.findEmployeesWithSalaryGreaterThan(salary);
+	}
+	
+	public List<Employee> getEmployeesInDepartment(String name)
+	{
+		return employeeRepository.findEmployeesInDepartment(name);
+	}
+	
+	public List<Employee> getHighestEarners(long id, double salary)
+	{
+		return employeeRepository.findEmployeesByDepartmentAndMinimumSalary(id, salary);
+	}
 }
