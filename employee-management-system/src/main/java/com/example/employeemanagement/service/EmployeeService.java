@@ -10,6 +10,8 @@ import com.example.employeemanagement.dto.EmployeeRequest;
 import com.example.employeemanagement.dto.EmployeeResponse;
 import com.example.employeemanagement.entity.Department;
 import com.example.employeemanagement.entity.Employee;
+import com.example.employeemanagement.exceptions.DepartmentNotFoundException;
+import com.example.employeemanagement.exceptions.EmployeeNotFoundException;
 import com.example.employeemanagement.repository.DepartmentRepository;
 import com.example.employeemanagement.repository.EmployeeRepository;
 
@@ -29,7 +31,7 @@ public class EmployeeService {
 	public EmployeeResponse createEmployee(EmployeeRequest request)
 	{
 		 Department department= departmentRepository.findById(request.getDepartmentId())
-		                     .orElseThrow(()->new RuntimeException("Department Not Found"));
+		                     .orElseThrow(()->new DepartmentNotFoundException("Department Doesn't Exist"));
 		
 	     Employee e=new Employee();
 	     e.setName(request.getName());
@@ -73,7 +75,7 @@ public class EmployeeService {
 	public EmployeeResponse getEmployee(Long id)
 	{
 		Employee employee= employeeRepository.findById(id)
-				                 .orElseThrow(()->new RuntimeException("Employee Not Found"));
+				                 .orElseThrow(()->new EmployeeNotFoundException("Employee Not Found with id: "+id));
 		
 		EmployeeResponse response=new EmployeeResponse();
 		response.setId(employee.getId());
@@ -89,7 +91,7 @@ public class EmployeeService {
 	public void delete(Long id)
 	{
 		employeeRepository.findById(id)
-				          .orElseThrow(()->new RuntimeException("Employee Not Found"));
+				          .orElseThrow(()->new EmployeeNotFoundException("Employee Not Found with id: "+id));
 		employeeRepository.deleteById(id);
 	}
 	
@@ -97,10 +99,10 @@ public class EmployeeService {
 	public EmployeeResponse update(Long id, EmployeeRequest request)
 	{
 	     Employee emp= employeeRepository.findById(id)
-	     .orElseThrow(()-> new RuntimeException("Employee Not FOund"));	
+	     .orElseThrow(()-> new EmployeeNotFoundException("Employee Not Found with id: "+id));	
 	     
 	     Department department= departmentRepository.findById(request.getDepartmentId())
-	    		                .orElseThrow(()->new RuntimeException("Department Not Found"));
+	    		                .orElseThrow(()->new DepartmentNotFoundException("Department Doesn't Exist"));
 	     
 	     emp.setName(request.getName());
 	     emp.setSalary(request.getSalary());

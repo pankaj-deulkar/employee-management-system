@@ -18,7 +18,7 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private double salary;
+	private Double salary;
 	@ManyToOne
 	@JoinColumn(name="department_id")
 	@JsonIgnoreProperties("employees")
@@ -52,11 +52,11 @@ public class Employee {
 		this.name = name;
 	}
 
-	public double getSalary() {
+	public Double getSalary() {
 		return salary;
 	}
 
-	public void setSalary(double salary) {
+	public void setSalary(Double salary) {
 		this.salary = salary;
 	}
 	

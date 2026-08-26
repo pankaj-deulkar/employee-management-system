@@ -1,12 +1,21 @@
 package com.example.employeemanagement.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 import com.example.employeemanagement.entity.Department;
 
 public class EmployeeRequest {
 
-	
+	@NotBlank(message="Name Is Required")
 	private String name;
-	private double salary;
+	
+	@NotNull(message = "Salary Is required")
+	@Positive(message= "Salary must be greater than 0")
+	private Double salary;
+	
+	@NotNull(message = "Department Id is required")
 	private Long departmentId;
 
 	
@@ -19,11 +28,11 @@ public class EmployeeRequest {
 		this.name = name;
 	}
 
-	public double getSalary() {
+	public Double getSalary() {
 		return salary;
 	}
 
-	public void setSalary(double salary) {
+	public void setSalary(Double salary) {
 		this.salary = salary;
 	}
 

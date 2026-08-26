@@ -2,7 +2,7 @@ package com.example.employeemanagement.controller;
 
 import java.util.List;
 
-
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class EmployeeController {
   }
   
   @PostMapping
-  public ResponseEntity<EmployeeResponse> createEmployee(@RequestBody EmployeeRequest
+  public ResponseEntity<EmployeeResponse> createEmployee(@Valid @RequestBody EmployeeRequest
 		  request)
   {
 	  EmployeeResponse response= employeeService.createEmployee(request);
@@ -61,7 +61,7 @@ public class EmployeeController {
   }
   
   @PutMapping("/{id}")
-  public EmployeeResponse update(@PathVariable Long id, @RequestBody EmployeeRequest request)
+  public EmployeeResponse update(@PathVariable Long id, @Valid @RequestBody EmployeeRequest request)
   {
 	 return employeeService.update(id, request); 
   }
